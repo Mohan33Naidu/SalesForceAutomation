@@ -71,7 +71,7 @@ public class LoginUtility {
 				System.out.println("TestCase01 - Passed");
 			else
 				System.out.println("TestCase01 - Failed");
-		
+		quitBrowser();
 		}
 		catch (Exception e) {
 			System.out.println("Error:TestCase01 - Failed");
@@ -119,6 +119,7 @@ public class LoginUtility {
 			 System.out.println("TC02 - failed");
 		 }
 		 */
+		 quitBrowser();
 		}
 		catch (Exception e) {
 			System.out.println("Error:"+e.getMessage());
@@ -162,6 +163,7 @@ public class LoginUtility {
 					System.out.println("Testcase4B: Failed");
 					
 			}
+			quitBrowser();
 		}
 		catch (Exception e) {
 			System.out.println(e.getMessage());

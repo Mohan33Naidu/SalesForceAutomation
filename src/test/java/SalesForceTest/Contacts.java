@@ -17,10 +17,11 @@ public class Contacts extends LoginUtility {
 			 loginBrowser();
 			 WebDriver driver=LoginUtility.driver;
 			
+			    TestCase_28();
 			 	TestCase_25();
 			 	TestCase_26();
 			 	TestCase_27();
-     			TestCase_28();
+     			
 			    TestCase_29();
 			    TestCase_30();
 			    TestCase_31();

@@ -4,6 +4,7 @@ import static org.junit.Assert.fail;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -274,14 +275,8 @@ public class RandomScenarios extends LoginUtility{
 			 Thread.sleep(2000);
 			 driver.findElement(By.id("rectypeftw")).click();//weekly
 			 waitForWebElementToBeVisible(driver.findElement(By.xpath("//label[contains(text(),'Sunday')]")));
-			 driver.findElement(By.id("RecurrenceEndDateOnly")).click();
-			 
-			 //date
-			// Calendar c= Calendar.getInstance();
-			 //c.add(Calendar.DATE, 15);
-			 //c.DATE
-			 
-			 driver.findElement(By.xpath("//input[@id='RecurrenceEndDateOnly']")).sendKeys(getPropertyValue("RecurDate"));
+			
+			 RecurringDate();
 			 
 			 driver.findElement(By.name("save")).click();
 			 Thread.sleep(2000);
@@ -303,9 +298,87 @@ public class RandomScenarios extends LoginUtility{
  catch (Exception e) {
 	System.out.println(e.getMessage());
 }
-			
+		
+		 
+		 
+		 
 		}
 
-
+	 static void RecurringDate() {
+		
+		 //driver.findElement(By.xpath("//input[@id='RecurrenceEndDateOnly']")).sendKeys(getPropertyValue("RecurDate"));
+		 
+		 LocalDate date2 =  LocalDate.now().plusDays(15);
+		 String sDate=date2.format(DateTimeFormatter.ofPattern("dd-MMMM-yyyy"));
+		 //String dot="9/October/2018";
+			String date,month,year;
+			String caldt,calmonth,calyear;		
+			/*
+			 * Split the String into String Array
+			 */
+			String dateArray[]= sDate.split("-");
+			date=dateArray[0];
+			month=dateArray[1];
+			year=dateArray[2];
+	 
+			driver.findElement(By.id("RecurrenceEndDateOnly")).click(); //calendar popup
+	 
+			WebElement cal;
+			cal=driver.findElement(By.id("datePickerCalendar"));
+			Select yearDropdown=new Select(driver.findElement(By.xpath("//select[contains(@name,'calYearPicker')]")));
+			
+			calyear=yearDropdown.getFirstSelectedOption().getText();
+			System.out.println("current year "+ calyear);
+			/**
+			 * Select the year
+			 */
+			while (!calyear.equals(year)) 
+			{
+				//driver.findElement(By.className("nextMonth")).click();
+				//change year if not equal
+				driver.findElement(By.xpath("//select[contains(@name,'calYearPicker')]")).click();
+				Select selYear=new Select(driver.findElement(By.xpath("//select[contains(@name,'calYearPicker')]")));
+				selYear.selectByVisibleText(year);
+				
+				
+			}
+			//get month from ui
+			Select mnthDrpdown=new Select(driver.findElement(By.xpath("//select[contains(@name,'calMonthPicker')]")));
+			calmonth=mnthDrpdown.getFirstSelectedOption().getText();
+			System.out.println("current month "+ calmonth);
+			/**
+			 * Select the Month
+			 */
+			if(!calmonth.equalsIgnoreCase(month)) 
+			{
+				Select selMonth=new Select(driver.findElement(By.xpath("//select[contains(@name,'calMonthPicker')]")));
+				driver.findElement(By.xpath("//select[contains(@name,'calMonthPicker')]")).click();
+				
+				selMonth.selectByVisibleText(month);
+			}
+	 
+			cal=driver.findElement(By.id("datePickerCalendar"));
+			/**
+			 * Select the Date
+			 */
+			List<WebElement> rows,cols;
+			rows=cal.findElements(By.tagName("tr"));
+			for (int i = 1; i < rows.size(); i++) 
+			{
+				cols=rows.get(i).findElements(By.tagName("td"));
+				for (int j = 0; j < cols.size(); j++) 
+				{
+					caldt=cols.get(j).getText();
+					if (caldt.equals(date)) 
+					{
+						cols.get(j).click();
+						break;
+					}
+				}
+			}
+			
+			
+			
+	 }
 
 }
